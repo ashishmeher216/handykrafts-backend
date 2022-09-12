@@ -14,21 +14,14 @@ public class UserController {
 	@Autowired
 	private UserService us;
 	
-//	@GetMapping("/hello")
-//	public String hello() {
-//		return "Hello";
-//	}
-	
 	@PostMapping("/signup")
-	public void userSignup(@RequestBody User user) {
-		System.out.println("Hello user...");
-//		us.userSignup(user);
-
+	public String userSignup(@RequestBody User user) {
+		return us.userSignup(user);
 	}
 	
-//	@PostMapping("/signin")
-//	public String getTickets(){
-//		return (List<Ticket>) dao.findAll();
-//	}
+	@PostMapping("/signin")
+	public String getTickets(@RequestBody User user){
+		return us.userSignin(user);
+	}
 }
 

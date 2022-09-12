@@ -1,4 +1,4 @@
-package handykrafts_backend;
+package com.handykrafts;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
