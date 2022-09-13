@@ -3,6 +3,8 @@ package com.handykrafts.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -12,7 +14,7 @@ public class UserService {
 	@Autowired
 	private UserDao dao;
 	
-	public String userSignup(User user){
+	public ResponseEntity userSignup(User user){
 		try {
 			Boolean b = false;
 			List<User> allUsers = (List<User>) dao.findAll();
@@ -23,16 +25,16 @@ public class UserService {
 				}
 			}
 			if(b) {
-				return "Email already registered!";
+				return new ResponseEntity<>("Email already registered!", HttpStatus.BAD_REQUEST);
 			}
 			dao.save(user);
-			return "Registration success...";
+			return new ResponseEntity<>("Registration success...", HttpStatus.OK);
 		}catch(Exception e) {
-			return "Registration failed!";
+			return new ResponseEntity<>("Registration failed", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	public String userSignin(User user){
+	public ResponseEntity userSignin(User user){
 		System.out.println(user);
 		try {
 			Boolean b = false;
@@ -44,13 +46,11 @@ public class UserService {
 				}
 			}
 			if(b) {
-				return "Signin success...";
+				return new ResponseEntity<>("Signin success...", HttpStatus.OK);
 			}
-			return "Invalid credentials!";
-			
+			return new ResponseEntity<>("Invalid credentials!", HttpStatus.BAD_REQUEST);			
 		}catch(Exception e) {
-//			System.out.println(e);
-			return "Something went wrong!";
+			return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

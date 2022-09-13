@@ -1,6 +1,7 @@
 package com.handykrafts.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +16,12 @@ public class UserController {
 	private UserService us;
 	
 	@PostMapping("/signup")
-	public String userSignup(@RequestBody User user) {
+	public ResponseEntity<User> userSignup(@RequestBody User user) {
 		return us.userSignup(user);
 	}
 	
 	@PostMapping("/signin")
-	public String getTickets(@RequestBody User user){
+	public ResponseEntity<User> getTickets(@RequestBody User user){
 		return us.userSignin(user);
 	}
 }
