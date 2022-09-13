@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="User")
 public class User {
-	
+		
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -18,12 +18,13 @@ public class User {
 	private String email;
 	private String mobile;
 	private String password;
-	
+	private String salt;
+
 	public User() {
 		super();
 	}
 	
-	public User(int id, String fname, String lname, String email, String mobile, String password) {
+	public User(int id, String fname, String lname, String email, String mobile, String password,String salt) {
 		super();
 		this.id = id;
 		this.fname = fname;
@@ -31,6 +32,7 @@ public class User {
 		this.email = email;
 		this.mobile = mobile;
 		this.password = password;
+		this.salt = salt;
 	}
 
 	public int getId() {
@@ -80,11 +82,19 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 
 	@Override
 	public String toString() {
-		return "UserModel [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", mobile="
-				+ mobile + ", password=" + password + "]";
+		return "User [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", mobile=" + mobile
+				+ ", password=" + password + ", salt=" + salt + "]";
 	}
 	
 	

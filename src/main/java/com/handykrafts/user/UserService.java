@@ -5,6 +5,7 @@ import java.util.List;
 import com.handykrafts.response.Response;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 
@@ -31,6 +32,12 @@ public class UserService {
 				Response.setMessage("Email already registered!");
 				return Response;
 			}
+			
+			//hash the password using bcrypt
+			String salt = BCrypt.gensalt();
+		    String hashedPwd = BCrypt.hashpw(user.getPassword(), salt);
+		    user.setPassword(hashedPwd);
+		    user.setSalt(salt);
 			dao.save(user);
 			Response.setStatus(true);
 			Response.setMessage("Registration successful!");
@@ -50,12 +57,16 @@ public class UserService {
 			List<User> allUsers = (List<User>) dao.findAll();
 			
 			for(User u : allUsers) {
-				if(u.getEmail().equals(user.getEmail()) && u.getPassword().equals(user.getPassword())){
-					b=true;
-					obj.put("fname", u.getFname());
-					obj.put("lname", u.getLname());
-					obj.put("email", u.getEmail());
-					break;
+				if(u.getEmail().equals(user.getEmail())){
+					String salt = u.getSalt();
+			        String hashedPwd = BCrypt.hashpw(user.getPassword(), salt);
+			        if(hashedPwd.equals(u.getPassword())) {
+			        	b=true;
+						obj.put("fname", u.getFname());
+						obj.put("lname", u.getLname());
+						obj.put("email", u.getEmail());
+						break;
+			        }
 				}
 			}
 			if(b) {
