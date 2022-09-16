@@ -7,9 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="User")
+@Table(name = "User")
 public class User {
-		
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -19,12 +19,14 @@ public class User {
 	private String mobile;
 	private String password;
 	private String salt;
+	private Boolean loggedIn;
 
 	public User() {
 		super();
 	}
-	
-	public User(int id, String fname, String lname, String email, String mobile, String password,String salt) {
+
+	public User(int id, String fname, String lname, String email, String mobile, String password, String salt,
+			Boolean loggedIn) {
 		super();
 		this.id = id;
 		this.fname = fname;
@@ -33,6 +35,7 @@ public class User {
 		this.mobile = mobile;
 		this.password = password;
 		this.salt = salt;
+		this.loggedIn = loggedIn;
 	}
 
 	public int getId() {
@@ -82,7 +85,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getSalt() {
 		return salt;
 	}
@@ -91,11 +94,18 @@ public class User {
 		this.salt = salt;
 	}
 
+	public Boolean getLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(Boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", mobile=" + mobile
-				+ ", password=" + password + ", salt=" + salt + "]";
+				+ ", password=" + password + ", salt=" + salt + ", loggedIn=" + loggedIn + "]";
 	}
-	
-	
+
 }

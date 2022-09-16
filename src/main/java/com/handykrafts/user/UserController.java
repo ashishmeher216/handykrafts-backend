@@ -49,5 +49,21 @@ public class UserController {
 	      return new ResponseEntity<Response>(signinResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+	
+	@PostMapping("/signout")
+	public ResponseEntity<Response> userSignout(@RequestBody User user){
+		try {
+	        Response signoutResponse = us.userSignout(user);
+	      if (signoutResponse.isStatus()) {
+	        return new ResponseEntity<Response>(signoutResponse, HttpStatus.OK);
+	      } else {
+	        return new ResponseEntity<Response>(signoutResponse, HttpStatus.BAD_REQUEST);
+	      }
+
+	    } catch (Exception e) {
+	     Response signoutResponse = null;
+	      return new ResponseEntity<Response>(signoutResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 }
 

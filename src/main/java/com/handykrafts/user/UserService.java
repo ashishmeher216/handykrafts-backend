@@ -61,10 +61,16 @@ public class UserService {
 					String salt = u.getSalt();
 			        String hashedPwd = BCrypt.hashpw(user.getPassword(), salt);
 			        if(hashedPwd.equals(u.getPassword())) {
-			        	b=true;
+			        	//set the loggedIn flag to true for that user in database and send his details
+						u.setLoggedIn(true);
+						dao.save(u);
+						
+						b=true;
 						obj.put("fname", u.getFname());
 						obj.put("lname", u.getLname());
 						obj.put("email", u.getEmail());
+						obj.put("loggedIn", u.getLoggedIn());
+						
 						break;
 			        }
 				}
@@ -75,12 +81,48 @@ public class UserService {
 				Response.setPayload(obj);
 				return Response;
 			}
-			
+			Response.setStatus(false);
 			Response.setMessage("Invalid credentials!");
 			return Response;
 			
 		}catch(Exception e) {
 			
+			Response.setStatus(false);
+		    Response.setMessage("Something went wrong!");
+		    return Response;
+		}
+	}
+	
+	
+	public Response userSignout(User user){
+		Response Response = new Response();
+		try {
+			Boolean b = false;
+			List<User> allUsers = (List<User>) dao.findAll();
+			
+			for(User u : allUsers) {
+				if(u.getEmail().equals(user.getEmail())){
+			        	
+		        	//set the loggedIn flag to false for that user in database and send his details
+					u.setLoggedIn(false);
+					dao.save(u);
+					
+					b=true;
+					
+					break;
+				}
+			}
+			if(b) {
+				Response.setStatus(true);
+				Response.setMessage("Signout successful!");
+				return Response;
+			}
+			
+			Response.setStatus(false);
+			Response.setMessage("You must be logged in!");
+			return Response;
+			
+		}catch(Exception e) {
 			Response.setStatus(false);
 		    Response.setMessage("Something went wrong!");
 		    return Response;
